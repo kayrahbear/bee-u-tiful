@@ -11,6 +11,8 @@ public class LevelManager : MonoBehaviour {
 
   public float waitToRespawn;
 
+  private CameraController theCamera;
+
   private PlayerController thePlayer;
 
   public Vector3 respawnPoint;
@@ -21,7 +23,9 @@ public class LevelManager : MonoBehaviour {
   void Start() {
     thePlayer = FindObjectOfType<PlayerController>();
 
-    respawnPoint = thePlayer.transform.position + Vector3.up;
+    respawnPoint = thePlayer.transform.position;
+
+    theCamera = FindObjectOfType<CameraController>();
   }
 
   // Update is called once per frame
@@ -41,6 +45,7 @@ public class LevelManager : MonoBehaviour {
     UIController.instance.FadeToBlack();
     yield return new WaitForSeconds(waitToRespawn);
     thePlayer.transform.position = respawnPoint;
+    theCamera.SnapToTarget();
     thePlayer.gameObject.SetActive(true);
 
     respawning = false;
