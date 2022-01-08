@@ -19,6 +19,9 @@ public class LevelManager : MonoBehaviour {
 
   [HideInInspector]
   public bool respawning;
+
+  [HideInInspector]
+  public float levelTimer;
   // Start is called before the first frame update
   void Start() {
     thePlayer = FindObjectOfType<PlayerController>();
@@ -30,6 +33,9 @@ public class LevelManager : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
+
+    levelTimer += Time.deltaTime;
+    UIController.instance.timerText.text = "Time: " + Mathf.Round(levelTimer);
 
   }
 
