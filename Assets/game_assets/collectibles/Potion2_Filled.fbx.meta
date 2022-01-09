@@ -1,9 +1,24 @@
 fileFormatVersion: 2
-guid: 4767a60accdf53140bb8f7501c9c867e
+guid: 66a5abf921d013a4daf3a8e9a2f640e3
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Brown
+    second: {fileID: 2100000, guid: f199846a34c0a584ea72dc1a718cd658, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: ce8ad85d3b0dab240b8c95d99f8c9c79, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Liquid_Yellow
+    second: {fileID: 2100000, guid: 95cc885caaf5d6f448daa4d361533547, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
