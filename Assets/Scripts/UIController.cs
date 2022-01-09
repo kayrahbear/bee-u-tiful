@@ -17,7 +17,7 @@ public class UIController : MonoBehaviour {
   public float fadeSpeed = 0.8f;
 
   public Slider healthSlider;
-  public TMP_Text healthText, timerText;
+  public TMP_Text healthText, timerText, pollenText;
 
   // Start is called before the first frame update
   void Start() {

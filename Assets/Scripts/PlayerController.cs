@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+
+  public static PlayerController instance;
   public float moveSpeed;
   public float jumpHeight, gravityScale;
   private float yStore;

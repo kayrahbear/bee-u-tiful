@@ -22,6 +22,8 @@ public class LevelManager : MonoBehaviour {
 
   [HideInInspector]
   public float levelTimer;
+
+  public int currentPollenCount;
   // Start is called before the first frame update
   void Start() {
     thePlayer = FindObjectOfType<PlayerController>();
@@ -47,6 +49,7 @@ public class LevelManager : MonoBehaviour {
   }
 
   public IEnumerator RespawnPlayerCo() {
+    yield return new WaitForSeconds(2f);
     thePlayer.gameObject.SetActive(false);
     UIController.instance.FadeToBlack();
     yield return new WaitForSeconds(waitToRespawn);
@@ -59,5 +62,11 @@ public class LevelManager : MonoBehaviour {
     UIController.instance.FadeFromBlack();
 
     PlayerHealthController.instance.FillHealth();
+  }
+
+  public void GetPollen() {
+    currentPollenCount++;
+
+    UIController.instance.pollenText.text = currentPollenCount.ToString();
   }
 }

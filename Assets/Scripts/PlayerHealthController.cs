@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerHealthController : MonoBehaviour {
   public static PlayerHealthController instance;
 
+  public Animator animator;
+
   private void Awake() {
     if (instance == null) {
       instance = this;
@@ -61,11 +63,13 @@ public class PlayerHealthController : MonoBehaviour {
 
     if (invincibilityCounter <= 0) {
       currentHealth -= damage;
+      animator.SetTrigger("Hit");
       invincibilityCounter = invincibilityLength;
     }
 
     if (currentHealth <= 0) {
       currentHealth = 0;
+      animator.SetTrigger("Die");
       LevelManager.instance.RespawnPlayer();
     }
   }
