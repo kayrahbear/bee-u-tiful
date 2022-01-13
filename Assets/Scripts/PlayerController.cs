@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
   void Start() {
     camCon = FindObjectOfType<CameraController>();
     charCon = GetComponent<CharacterController>();
+    anim.SetBool("isGrounded", true);
   }
 
   private void FixedUpdate() {
@@ -51,11 +52,10 @@ public class PlayerController : MonoBehaviour {
 
     moveAmount.y = yStore;
 
-    if (charCon.isGrounded) {
-      if (Input.GetButtonDown("Jump")) {
-        moveAmount.y = jumpHeight;
-      }
+    if (Input.GetButtonDown("Jump")) {
+      Jump();
     }
+
 
     charCon.Move(new Vector3(moveAmount.x * moveSpeed, moveAmount.y, moveAmount.z * moveSpeed) * Time.deltaTime);
 
@@ -63,6 +63,13 @@ public class PlayerController : MonoBehaviour {
 
     anim.SetFloat("speed", moveVel);
     anim.SetBool("isGrounded", charCon.isGrounded);
-    anim.SetFloat("yVel", moveAmount.y);
+    anim.SetFloat("yVel", yStore);
+  }
+
+  private void Jump() {
+    if (charCon.isGrounded) {
+      anim.SetTrigger("jump");
+      moveAmount.y = jumpHeight;
+    }
   }
 }

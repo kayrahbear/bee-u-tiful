@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour {
     idle,
     patrolling,
     chasing,
-    attack,
+    attacking,
     returning,
     stagger
   }
@@ -50,6 +50,7 @@ public class EnemyController : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
+
 
     switch (currentState) {
       case EnemyState.idle:
@@ -82,17 +83,22 @@ public class EnemyController : MonoBehaviour {
         }
         break;
       case EnemyState.chasing:
-        anim.SetBool("isRunning", true);
+        anim.SetBool("isRunning", false);
 
         lookTarget = thePlayer.transform.position;
-        yStore = theRB.velocity.y;
-        moveDirection = lookTarget - transform.position;
+        anim.SetBool("isRunning", true);
+        if (chaseWaitCounter > 0) {
+          chaseWaitCounter -= Time.deltaTime;
+        } else {
+          yStore = theRB.velocity.y;
+          moveDirection = lookTarget - transform.position;
 
-        moveDirection.y = 0f;
-        moveDirection.Normalize();
+          moveDirection.y = 0f;
+          moveDirection.Normalize();
 
-        theRB.velocity = moveDirection * chaseSpeed;
-        theRB.velocity = new Vector3(theRB.velocity.x, yStore, theRB.velocity.z);
+          theRB.velocity = moveDirection * chaseSpeed;
+          theRB.velocity = new Vector3(theRB.velocity.x, yStore, theRB.velocity.z);
+        }
 
         if (Vector3.Distance(transform.position, lookTarget) > loseChaseDistance) {
           currentState = EnemyState.returning;
@@ -106,17 +112,23 @@ public class EnemyController : MonoBehaviour {
           currentState = EnemyState.patrolling;
         }
         break;
+      case EnemyState.attacking:
+
+        break;
 
     }
 
-    if (Vector3.Distance(thePlayer.transform.position, transform.position) <= chaseDistance) {
-      currentState = EnemyState.chasing;
+    if (currentState != EnemyState.chasing) {
+      if (Vector3.Distance(thePlayer.transform.position, transform.position) <= chaseDistance) {
+        currentState = EnemyState.chasing;
+
+        theRB.velocity = Vector3.up * hopForce;
+        chaseWaitCounter = waitToChase;
+      }
     }
 
     lookTarget.y = transform.position.y;
     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookTarget - transform.position), turnSpeed * Time.deltaTime);
-
-    // transform.LookAt(lookTarget);
 
   }
 
@@ -129,6 +141,24 @@ public class EnemyController : MonoBehaviour {
       if (currentPatrolPoint >= patrolPoints.Length) {
         currentPatrolPoint = 0;
       }
+    }
+  }
+
+  public void DoDamage() {
+    anim.SetTrigger("Attack");
+    PlayerHealthController.instance.TakeDamage(1);
+    chaseWaitCounter = waitToChase;
+  }
+
+  private void OnCollisionEnter(Collision collision) {
+    if (collision.gameObject.tag == "Player") {
+      DoDamage();
+    }
+  }
+
+  private void OnCollisionStay(Collision collision) {
+    if (collision.gameObject.tag == "Player") {
+      DoDamage();
     }
   }
 }
