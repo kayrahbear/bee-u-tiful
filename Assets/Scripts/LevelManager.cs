@@ -7,6 +7,8 @@ public class LevelManager : MonoBehaviour {
   private void Awake() {
     instance = this;
 
+    currentPollenCount = PlayerPrefs.GetInt("Pollen");
+
   }
 
   public float waitToRespawn;
@@ -31,6 +33,8 @@ public class LevelManager : MonoBehaviour {
     respawnPoint = thePlayer.transform.position;
 
     theCamera = FindObjectOfType<CameraController>();
+
+    UIController.instance.pollenText.text = currentPollenCount.ToString();
   }
 
   // Update is called once per frame
@@ -68,5 +72,7 @@ public class LevelManager : MonoBehaviour {
     currentPollenCount++;
 
     UIController.instance.pollenText.text = currentPollenCount.ToString();
+
+    PlayerPrefs.SetInt("Pollen", currentPollenCount);
   }
 }
